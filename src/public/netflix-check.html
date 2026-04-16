@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netflix 连通性检测</title>
+    <style>
+      :root {
+        --bg: #f6f7fb;
+        --card: #ffffff;
+        --text: #121826;
+        --muted: #5a6475;
+        --ok: #0f9d58;
+        --warn: #d97706;
+        --err: #dc2626;
+        --border: #d8deea;
+        --accent: #e50914;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        font-family: "PingFang SC", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+        background: radial-gradient(circle at 0% 0%, #ffe7e7, transparent 35%),
+          radial-gradient(circle at 100% 100%, #e8f0ff, transparent 30%),
+          var(--bg);
+        color: var(--text);
+      }
+
+      .panel {
+        width: min(640px, 100%);
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 18px 40px rgba(16, 24, 40, 0.08);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 30px;
+      }
+
+      .desc {
+        margin: 10px 0 18px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+        background: var(--accent);
+        cursor: pointer;
+      }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .result {
+        margin-top: 18px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .status {
+        margin: 0 0 6px;
+        font-weight: 700;
+      }
+
+      .ok {
+        color: var(--ok);
+      }
+
+      .warn {
+        color: var(--warn);
+      }
+
+      .err {
+        color: var(--err);
+      }
+
+      .meta {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="panel">
+      <h1>Netflix 网络连通性检测</h1>
+      <p class="desc">
+        这个页面只检测当前网络是否能连到 Netflix 域名，不提供绕过限制功能。检测成功不代表账号地区内容一定可看。
+      </p>
+      <button id="checkBtn">开始检测</button>
+      <section class="result">
+        <p id="status" class="status">等待检测</p>
+        <p id="meta" class="meta">点击“开始检测”后显示结果。</p>
+      </section>
+    </main>
+
+    <script>
+      const checkBtn = document.getElementById("checkBtn");
+      const statusEl = document.getElementById("status");
+      const metaEl = document.getElementById("meta");
+
+      const targets = [
+        "https://www.netflix.com/favicon.ico",
+        "https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.ico"
+      ];
+
+      function setStatus(text, level, meta) {
+        statusEl.textContent = text;
+        statusEl.className = `status ${level}`;
+        metaEl.textContent = meta;
+      }
+
+      async function probe(url, timeoutMs = 8000) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        const start = performance.now();
+        try {
+          await fetch(url + "?t=" + Date.now(), {
+            method: "GET",
+            mode: "no-cors",
+            cache: "no-store",
+            signal: controller.signal
+          });
+          return { ok: true, ms: Math.round(performance.now() - start), url };
+        } catch (err) {
+          return { ok: false, ms: Math.round(performance.now() - start), url, error: String(err) };
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+
+      async function runBackendCheck() {
+        const res = await fetch("/api/netflix-check", {
+          method: "GET",
+          cache: "no-store"
+        });
+        if (!res.ok) throw new Error("后端检测接口不可用");
+        return res.json();
+      }
+
+      async function runCheck() {
+        checkBtn.disabled = true;
+        setStatus("检测中...", "warn", "正在测试与 Netflix 域名的连接，请稍候。");
+        try {
+          const backend = await runBackendCheck();
+          const http = backend.http || {};
+          if (backend.verdict === "reachable") {
+            setStatus(
+              "服务端可访问 Netflix 主站",
+              "ok",
+              `${backend.message} 状态码 ${http.statusCode || "-"}，耗时约 ${http.elapsedMs || "-"}ms。若你浏览器直开仍是 Not Available，说明是浏览器/本地网络环境被拦截。`
+            );
+          } else if (backend.verdict === "blocked_page") {
+            setStatus(
+              "服务端检测到受限/拦截页面",
+              "err",
+              `${backend.message} 这与截图里的 “Not Available” 一致，通常是网络策略或 DNS 问题。`
+            );
+          } else if (backend.verdict === "unreachable") {
+            setStatus("无法连通 Netflix", "err", backend.message || "DNS 或 HTTPS 连接失败。");
+          } else {
+            setStatus(
+              "服务端结果不确定",
+              "warn",
+              `${backend.message} 状态码 ${http.statusCode || "-"}，建议切换网络再测试。`
+            );
+          }
+        } catch (e) {
+          const results = await Promise.all(targets.map((url) => probe(url)));
+          const success = results.find((item) => item.ok);
+          if (success) {
+            setStatus(
+              "可访问 Netflix 域名（前端探测）",
+              "ok",
+              `后端检测失败，已退回前端探测。连通 ${success.url}，耗时约 ${success.ms}ms。`
+            );
+          } else {
+            const firstErr = results[0];
+            setStatus(
+              "疑似无法访问 Netflix",
+              "err",
+              `后端检测失败（${String(e)}）；前端探测也失败（首个耗时 ${firstErr.ms}ms）。`
+            );
+          }
+        }
+        checkBtn.disabled = false;
+      }
+
+      checkBtn.addEventListener("click", runCheck);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+{
+  "symbol_to_sector": {
+    "AINUSDT": "AI",
+    "ZEREBROUSDT": "AI",
+    "PIXELUSDT": "GAMING",
+    "PEPEUSDT": "MEME",
+    "DOGEUSDT": "MEME"
+  },
+  "sector_to_symbols": {
+    "AI": [
+      "AINUSDT",
+      "ZEREBROUSDT",
+      "WLDUSDT",
+      "FETUSDT",
+      "ARKMUSDT",
+      "NFPUSDT"
+    ],
+    "GAMING": [
+      "PIXELUSDT",
+      "PORTALUSDT",
+      "NOTUSDT",
+      "XAIUSDT"
+    ],
+    "MEME": [
+      "DOGEUSDT",
+      "PEPEUSDT",
+      "WIFUSDT",
+      "BONKUSDT",
+      "FLOKIUSDT"
+    ]
+  },
+  "patterns": [
+    {
+      "pattern": "*AI*USDT",
+      "sector": "AI"
+    },
+    {
+      "pattern": "RE:^.*(INU|PEPE|DOGE|WIF|BONK|FLOKI)USDT$",
+      "sector": "MEME"
+    }
+  ]
+}

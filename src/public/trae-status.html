@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>TRAE 原版运行看板</title>
+    <link rel="stylesheet" href="/app.css" />
+    <link rel="stylesheet" href="/monitor-ws.css" />
+    <link rel="stylesheet" href="/monitor-ws-pushes.css" />
+    <link rel="stylesheet" href="/trae-status.css?v=20260401a" />
+  </head>
+  <body>
+    <main class="container push-board trae-board">
+      <section class="panel">
+        <div class="board-head">
+          <h2>TRAE 原版运行看板</h2>
+          <div class="board-links">
+            <a href="/monitor-ws" class="link-btn">monitor_ws 控制台</a>
+            <a href="/monitor-ws-pushes" class="link-btn">推送看板</a>
+            <a href="/" class="link-btn">返回主面板</a>
+          </div>
+        </div>
+
+        <div class="monitor-meta">
+          <div>整体状态：<span id="overallBadge" class="badge">读取中</span></div>
+          <div class="k" id="overallMeta">-</div>
+        </div>
+
+        <div class="terminal-toolbar">
+          <div class="runtime-actions">
+            <button id="startBtn">启动 TRAE</button>
+            <button id="refreshBtn">刷新状态</button>
+          </div>
+          <label class="k auto-refresh">
+            <input id="autoRefresh" type="checkbox" checked />
+            自动刷新(5s)
+          </label>
+        </div>
+
+        <div class="proc-grid">
+          <article class="proc-card" id="planACard">
+            <div class="proc-title">plan_a 监控进程</div>
+            <div class="proc-line">状态：<span id="planABadge" class="badge">-</span></div>
+            <div class="proc-line">PID：<span id="planAPid" class="k">-</span></div>
+            <div class="proc-line">运行时长：<span id="planAEtime" class="k">-</span></div>
+            <div class="proc-line">命令：<code id="planACmd" class="cmd">-</code></div>
+          </article>
+
+          <article class="proc-card" id="bridgeCard">
+            <div class="proc-title">trae_bridge 二次判定进程</div>
+            <div class="proc-line">状态：<span id="bridgeBadge" class="badge">-</span></div>
+            <div class="proc-line">PID：<span id="bridgePid" class="k">-</span></div>
+            <div class="proc-line">运行时长：<span id="bridgeEtime" class="k">-</span></div>
+            <div class="proc-line">命令：<code id="bridgeCmd" class="cmd">-</code></div>
+          </article>
+
+          <article class="proc-card" id="guardCard">
+            <div class="proc-title">guard 守护进程</div>
+            <div class="proc-line">状态：<span id="guardBadge" class="badge">-</span></div>
+            <div class="proc-line">PID：<span id="guardPid" class="k">-</span></div>
+            <div class="proc-line">运行时长：<span id="guardEtime" class="k">-</span></div>
+            <div class="proc-line">命令：<code id="guardCmd" class="cmd">-</code></div>
+          </article>
+        </div>
+
+        <div id="dbSummary" class="k db-summary">数据库统计加载中...</div>
+
+        <div class="table-wrap">
+          <table class="push-table trae-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>二次判定时间(BJT)</th>
+                <th>币种</th>
+                <th>level</th>
+                <th>score</th>
+                <th>threshold</th>
+                <th>alert/watch</th>
+                <th>source(PlanA)</th>
+                <th>source count</th>
+              </tr>
+            </thead>
+            <tbody id="rowsBody">
+              <tr><td colspan="9" class="empty">加载中...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="hintText" class="k">-</div>
+      </section>
+
+      <section class="panel">
+        <h2>实时日志</h2>
+        <div class="log-grid">
+          <div class="log-block">
+            <div class="log-title">plan_a_monitor.log</div>
+            <pre id="planALog" class="terminal-pane">加载中...</pre>
+          </div>
+          <div class="log-block">
+            <div class="log-title">trae_original_bridge.out</div>
+            <pre id="bridgeOutLog" class="terminal-pane">加载中...</pre>
+          </div>
+          <div class="log-block">
+            <div class="log-title">trae_original_bridge.log</div>
+            <pre id="bridgeDebugLog" class="terminal-pane">加载中...</pre>
+          </div>
+          <div class="log-block">
+            <div class="log-title">trae_original_guard.log</div>
+            <pre id="guardLog" class="terminal-pane">加载中...</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="/trae-status.js?v=20260401a"></script>
+  </body>
+</html>

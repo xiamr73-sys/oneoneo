@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>monitor_ws SlowAccum 分解看板</title>
+    <link rel="stylesheet" href="/app.css" />
+    <link rel="stylesheet" href="/monitor-ws-pushes.css?v=20260323b" />
+    <link rel="stylesheet" href="/monitor-ws-slow-accum.css?v=20260401a" />
+  </head>
+  <body>
+    <main class="container push-board slow-accum-board">
+      <section class="panel">
+        <div class="board-head">
+          <h2>SlowAccum 命中链路分解看板</h2>
+          <div class="board-links">
+            <a href="/monitor-ws-slow-accum-aster" class="link-btn">Aster分解看板</a>
+            <a href="/monitor-ws-pushes" class="link-btn">Binance推送看板</a>
+            <a href="/monitor-ws" class="link-btn">返回控制台</a>
+            <a href="/" class="link-btn">返回主面板</a>
+          </div>
+        </div>
+
+        <div class="filters">
+          <label>
+            时间窗口
+            <select id="windowHours">
+              <option value="4">4h</option>
+              <option value="12">12h</option>
+              <option value="24" selected>24h</option>
+              <option value="72">72h</option>
+              <option value="168">7d</option>
+            </select>
+          </label>
+          <label>
+            关卡筛选
+            <select id="stageFilter">
+              <option value="ALL" selected>全部</option>
+              <option value="READY">READY</option>
+              <option value="HITS">卡Hits</option>
+              <option value="TREND">卡Trend</option>
+              <option value="COOLDOWN">卡Cooldown</option>
+            </select>
+          </label>
+          <label>
+            搜索币种
+            <input id="symbolSearch" type="text" placeholder="例如 AIN / BTC / USDT" />
+          </label>
+          <button id="refreshBtn">刷新</button>
+          <label class="auto-refresh">
+            <input id="autoRefresh" type="checkbox" checked />
+            自动刷新(10s)
+          </label>
+        </div>
+
+        <div id="summaryText" class="k">加载中...</div>
+
+        <div class="table-wrap">
+          <table class="push-table slow-accum-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>币种</th>
+                <th><span class="th-wrap">当前命中 <button id="sortHitsBtn" class="th-sort" title="按当前命中排序">↕</button></span></th>
+                <th>窗口命中(区间/总)</th>
+                <th>卡Hits</th>
+                <th>卡Trend</th>
+                <th><span class="th-wrap">卡Cooldown <button id="sortCooldownBtn" class="th-sort" title="按冷却剩余排序">↕</button></span></th>
+                <th><span class="th-wrap">当前关卡 <button id="sortStageBtn" class="th-sort" title="按关卡排序">↕</button></span></th>
+                <th>趋势摘要</th>
+                <th><span class="th-wrap">最近Fake(BJT) <button id="sortLastFakeBtn" class="th-sort" title="按最近Fake时间排序">↕</button></span></th>
+                <th>最近Slow(BJT)</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr>
+                <td colspan="11" class="empty">加载中...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="hintText" class="k">-</div>
+      </section>
+    </main>
+    <script src="/monitor-ws-slow-accum.js?v=20260401a"></script>
+  </body>
+</html>

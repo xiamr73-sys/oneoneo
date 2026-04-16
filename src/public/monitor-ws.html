@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>monitor_ws 控制台</title>
+    <link rel="stylesheet" href="/app.css" />
+    <link rel="stylesheet" href="/monitor-ws.css" />
+  </head>
+  <body>
+    <div class="bg-shape bg1"></div>
+    <div class="bg-shape bg2"></div>
+    <main class="container monitor-layout">
+      <section class="panel">
+        <div class="monitor-head">
+          <h2>monitor_ws 控制台</h2>
+          <div class="runtime-actions">
+            <a href="/monitor-ws-pushes" class="secondary-btn link-btn">推送看板</a>
+            <a href="/monitor-ws-pushes-aster" class="secondary-btn link-btn">Aster看板</a>
+            <a href="/monitor-ws-slow-accum" class="secondary-btn link-btn">SlowAccum分解</a>
+            <a href="/monitor-traffic" class="secondary-btn link-btn">流量看板</a>
+            <a href="/" class="secondary-btn link-btn">返回主面板</a>
+          </div>
+        </div>
+        <div class="monitor-meta">
+          <div>进程状态：<span id="runBadge" class="badge">读取中</span></div>
+          <div class="k" id="runMeta">-</div>
+        </div>
+        <div class="terminal-toolbar">
+          <div class="runtime-actions">
+            <button id="startRuntimeBtn">启动进程</button>
+            <button id="refreshRuntimeBtn">刷新状态</button>
+          </div>
+          <label class="k auto-refresh">
+            <input id="autoRefreshToggle" type="checkbox" checked />
+            自动刷新(5s)
+          </label>
+        </div>
+        <pre id="terminalPane" class="terminal-pane">正在加载运行日志...</pre>
+        <div id="runtimeHint" class="k">-</div>
+      </section>
+
+      <section class="panel">
+        <h2>Discord 警报分数</h2>
+        <div class="setting-row">
+          <label for="discordMinScore">最小推送分数</label>
+          <input id="discordMinScore" type="number" min="0" max="200" step="1" />
+          <button id="saveScoreBtn">保存分数</button>
+        </div>
+        <div class="k">对应 `monitor_ws.py` 参数：`--discord-min-score`</div>
+      </section>
+
+      <section class="panel">
+        <h2>十模块开关</h2>
+        <div id="moduleGrid" class="module-grid"></div>
+        <div class="module-actions">
+          <button id="enableAllBtn" class="secondary-btn">全部开启</button>
+          <button id="disableAllBtn" class="secondary-btn">全部关闭</button>
+          <button id="saveModulesBtn">保存模块配置</button>
+        </div>
+        <div id="settingsHint" class="k">-</div>
+      </section>
+    </main>
+    <script src="/monitor-ws.js?v=20260312c"></script>
+  </body>
+</html>

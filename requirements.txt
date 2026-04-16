@@ -1,0 +1,13 @@
+python-binance
+pyarrow
+pandas
+numpy
+scipy
+xgboost
+scikit-learn
+PyYAML
+aiohttp
+requests
+websockets
+cryptohftdata
+ccxt

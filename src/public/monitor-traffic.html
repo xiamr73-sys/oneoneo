@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>监控流量看板</title>
+    <link rel="stylesheet" href="/app.css" />
+    <link rel="stylesheet" href="/monitor-traffic.css?v=20260414b" />
+  </head>
+  <body>
+    <main class="container traffic-board">
+      <section class="panel">
+        <div class="board-head">
+          <h2>监控流量看板</h2>
+          <div class="board-links">
+            <a href="/monitor-ws" class="link-btn">返回控制台</a>
+            <a href="/monitor-ws-pushes" class="link-btn">推送看板</a>
+            <a href="/trae" class="link-btn">TRAE看板</a>
+            <a href="/" class="link-btn">返回主面板</a>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <button id="refreshBtn">刷新</button>
+          <label class="auto-refresh">
+            <input id="autoRefresh" type="checkbox" checked />
+            自动刷新(5s)
+          </label>
+          <span id="statusText" class="k">加载中...</span>
+        </div>
+
+        <div class="cards">
+          <div class="card stat-card">
+            <div class="title">计费口径入流量</div>
+            <div id="billingInText" class="value">-</div>
+          </div>
+          <div class="card stat-card">
+            <div class="title">计费口径出流量</div>
+            <div id="billingOutText" class="value">-</div>
+          </div>
+          <div class="card stat-card">
+            <div class="title">计费口径总流量</div>
+            <div id="billingTotalText" class="value">-</div>
+          </div>
+          <div class="card stat-card">
+            <div class="title">计费接口数</div>
+            <div id="billingIfaceText" class="value">-</div>
+          </div>
+          <div class="card stat-card">
+            <div class="title">监控口径入流量</div>
+            <div id="monitorInText" class="value">-</div>
+          </div>
+          <div class="card stat-card">
+            <div class="title">监控口径出流量</div>
+            <div id="monitorOutText" class="value">-</div>
+          </div>
+          <div class="card stat-card">
+            <div class="title">监控口径总流量</div>
+            <div id="monitorTotalText" class="value">-</div>
+          </div>
+          <div class="card stat-card">
+            <div class="title">运行监控程序</div>
+            <div id="procCountText" class="value">-</div>
+          </div>
+        </div>
+
+        <div id="summaryText" class="k">-</div>
+
+        <div class="table-wrap">
+          <table class="traffic-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>计费接口</th>
+                <th>状态</th>
+                <th>累计入流量</th>
+                <th>累计出流量</th>
+                <th>累计总流量</th>
+                <th>当前计数器(入/出)</th>
+              </tr>
+            </thead>
+            <tbody id="ifaceBody">
+              <tr>
+                <td colspan="7" class="empty">加载中...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-wrap">
+          <table class="traffic-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>程序</th>
+                <th>进程数</th>
+                <th>PID列表</th>
+                <th>累计入流量</th>
+                <th>累计出流量</th>
+                <th>累计总流量</th>
+              </tr>
+            </thead>
+            <tbody id="groupBody">
+              <tr>
+                <td colspan="7" class="empty">加载中...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-wrap detail-wrap">
+          <table class="traffic-table detail-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>程序</th>
+                <th>PID</th>
+                <th>运行时长</th>
+                <th>累计入流量</th>
+                <th>累计出流量</th>
+                <th>累计总流量</th>
+                <th>命令</th>
+              </tr>
+            </thead>
+            <tbody id="procBody">
+              <tr>
+                <td colspan="8" class="empty">加载中...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="hintText" class="k">-</div>
+      </section>
+    </main>
+    <script src="/monitor-traffic.js?v=20260414b"></script>
+  </body>
+</html>

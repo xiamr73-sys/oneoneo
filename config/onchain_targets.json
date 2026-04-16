@@ -1,0 +1,25 @@
+{
+  "symbols": [
+    "AINUSDT",
+    "PIXELUSDT",
+    "ZEREBROUSDT"
+  ],
+  "patterns": [
+    "*AI*USDT",
+    "RE:^.*(AIN|AINU|PIXEL|ZEREBRO)USDT$"
+  ],
+  "cvd_decay_tau_by_symbol": {
+    "AINUSDT": 4.0,
+    "PIXELUSDT": 5.0,
+    "ZEREBROUSDT": 3.0
+  },
+  "auto_add": {
+    "enabled": true,
+    "vol_ratio_1m": 5.0,
+    "min_volume_1m": 200000.0,
+    "ttl_sec": 86400,
+    "discord_enabled": false,
+    "discord_batch_window_sec": 3.0,
+    "discord_max_rows": 15
+  }
+}

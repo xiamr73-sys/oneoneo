@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6币趋势预测看板</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <h1>6币趋势预测看板</h1>
+        <div class="sub">BTC / ETH / SOL / TAO / ZEC / PEPE（10分钟趋势）</div>
+        <div class="toolbar">
+          <button id="refreshBtn">立即刷新</button>
+          <span id="statusText" class="k">加载中...</span>
+        </div>
+      </header>
+
+      <section class="grid" id="cards"></section>
+
+      <section class="panel">
+        <div class="row"><div>系统状态</div><div id="systemEnabled" class="k">-</div></div>
+        <div class="row"><div>预测周期</div><div id="systemInterval" class="k">-</div></div>
+        <div class="row"><div>预测窗口</div><div id="systemHorizon" class="k">-</div></div>
+        <div class="row"><div>最近运行</div><div id="lastRunAt" class="k">-</div></div>
+        <div class="row"><div>最近错误</div><div id="lastError" class="k">-</div></div>
+      </section>
+    </main>
+    <script src="/app.js?v=20260321a"></script>
+  </body>
+</html>

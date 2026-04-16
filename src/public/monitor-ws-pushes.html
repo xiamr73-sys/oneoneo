@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>monitor_ws 推送看板</title>
+    <link rel="stylesheet" href="/app.css" />
+    <link rel="stylesheet" href="/monitor-ws-pushes.css?v=20260323b" />
+  </head>
+  <body>
+    <main class="container push-board">
+      <section class="panel">
+        <div class="board-head">
+          <h2>monitor_ws 推送看板</h2>
+          <div class="board-links">
+            <a href="/monitor-ws-pushes-aster" class="link-btn">Aster看板</a>
+            <a href="/monitor-ws-slow-accum" class="link-btn">SlowAccum分解</a>
+            <a href="/monitor-ws" class="link-btn">返回控制台</a>
+            <a href="/" class="link-btn">返回主面板</a>
+          </div>
+        </div>
+
+        <div class="filters">
+          <label>
+            时间窗口
+            <select id="windowHours">
+              <option value="4">4h</option>
+              <option value="12">12h</option>
+              <option value="24">24h</option>
+              <option value="72">72h</option>
+              <option value="168" selected>7d</option>
+            </select>
+          </label>
+          <label>
+            搜索币种
+            <input id="symbolSearch" type="text" placeholder="例如 AIN / BTC / USDT" />
+          </label>
+          <button id="refreshBtn">刷新</button>
+          <label class="auto-refresh">
+            <input id="autoRefresh" type="checkbox" checked />
+            自动刷新(10s)
+          </label>
+        </div>
+
+        <div class="champion-grid">
+          <section id="internalChampionCard" class="champ-card">
+            <div class="champ-title">当前5分钟窗口 | 内部分数最高</div>
+            <div id="internalChampionSymbol" class="champ-symbol">-</div>
+            <div id="internalChampionMeta" class="champ-meta">暂无数据</div>
+            <div id="internalChampionNote" class="champ-note"></div>
+          </section>
+          <section id="dcChampionCard" class="champ-card">
+            <div class="champ-title">当前5分钟窗口 | DC可见分数最高</div>
+            <div id="dcChampionSymbol" class="champ-symbol">-</div>
+            <div id="dcChampionMeta" class="champ-meta">暂无数据</div>
+            <div id="dcChampionNote" class="champ-note"></div>
+          </section>
+        </div>
+
+        <div id="summaryText" class="k">加载中...</div>
+
+        <div class="table-wrap">
+          <table class="push-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>币种</th>
+                <th>
+                  <span class="th-wrap">推送次数 <button id="sortCountBtn" class="th-sort" title="按推送次数排序">↕</button></span>
+                </th>
+                <th>
+                  <span class="th-wrap">最近推送时间(BJT) <button id="sortTimeBtn" class="th-sort" title="按最近推送时间排序">↕</button></span>
+                </th>
+                <th>
+                  <span class="th-wrap">最近级别 <button id="sortLevelBtn" class="th-sort" title="按最近级别排序">↕</button></span>
+                </th>
+                <th>
+                  <span class="th-wrap">内部分数 <button id="sortInternalScoreBtn" class="th-sort" title="按内部分数排序">↕</button></span>
+                </th>
+                <th>
+                  <span class="th-wrap">DC可见分数 <button id="sortDcScoreBtn" class="th-sort" title="按DC可见分数排序">↕</button></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <tr>
+                <td colspan="7" class="empty">加载中...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="hintText" class="k">-</div>
+      </section>
+    </main>
+    <script src="/monitor-ws-pushes.js?v=20260323g"></script>
+  </body>
+</html>
