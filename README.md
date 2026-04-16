@@ -37,3 +37,11 @@ bash start_web.sh
 - `/monitor-ws-pushes` Binance 推送看板
 - `/monitor-ws-pushes-aster` Aster 推送看板
 - `/monitor-ws-slow-accum-aster` Aster SlowAccum 分解看板
+
+## Aster 数据库快照
+- 快照文件：`data/snapshots/monitor_ws_signals_aster_20260415.db.gz`
+- 还原命令：
+```bash
+mkdir -p data/logs
+gunzip -c data/snapshots/monitor_ws_signals_aster_20260415.db.gz > data/logs/monitor_ws_signals_aster.db
+```
